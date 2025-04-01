@@ -41,7 +41,7 @@ export default function Home() {
           alt="Avatar"
           style={{ borderRadius: '50%', width: '80px' }}
         />
-        <h2 style={{ margin: '1rem 0 0.5rem' }}>Ghilas QA</h2>
+        <h2 style={{ margin: '1rem 0 0.5rem' }}>Ghilas The QA dev🚀</h2>
         <p>Software Tester & Playwright Explorer 🚀</p>
         <button onClick={() => setMessage('Hello from the test!')} data-testid="clickMe">
           Click Me

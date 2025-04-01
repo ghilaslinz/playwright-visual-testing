@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:visual": "npx playwright test tests/visual.spec.ts",
+    "test:visual:update": "npx playwright test tests/visual.spec.ts --update-snapshots",
+    "test:ui": "npx playwright test --ui"
   },
   "dependencies": {
     "next": "15.2.4",
