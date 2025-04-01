@@ -44,12 +44,14 @@ jobs:
           mkdir -p .github/actions/upload-artifact
           curl -L https://github.com/actions/upload-artifact/archive/refs/tags/v3.tar.gz | tar -xz --strip-components=1 -C .github/actions/upload-artifact
 
-      - name: 📦 Upload visual diffs manually
-        if: failure()
-        uses: ./.github/actions/upload-artifact
-        with:
-          name: visual-diffs
-          path: test-results/**/*.png
+      - name: 📦 Upload visual diffs
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: visual-diffs
+    path: test-results/**/*.png
+
+
 
       - name: 💬 Comment on PR with visual test status
         if: github.event_name == 'pull_request' && failure()
