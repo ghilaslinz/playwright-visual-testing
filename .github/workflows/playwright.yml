@@ -41,7 +41,7 @@ jobs:
 
       - name: 📦 Upload visual diffs
         if: failure()
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v3
         with:
           name: visual-diffs
           path: test-results/**/*.png
