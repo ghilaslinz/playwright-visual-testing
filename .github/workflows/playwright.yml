@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -39,21 +43,14 @@ jobs:
       - name: 🧪 Run visual tests
         run: npm run test:visual
 
-      - name: 🛠️ Clone upload-artifact manually
-        run: |
-          mkdir -p .github/actions/upload-artifact
-          curl -L https://github.com/actions/upload-artifact/archive/refs/tags/v3.tar.gz | tar -xz --strip-components=1 -C .github/actions/upload-artifact
-
-      - name: 📦 Upload visual diffs
+      - name: 📦 Upload visual diffs (on failure only)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-        name: visual-diffs
-        path: test-results/**/*.png
+          name: visual-diffs
+          path: test-results/**/*.png
 
-
-
-      - name: 💬 Comment on PR with visual test status
+      - name: 💬 Comment on PR with visual test failure (on PRs only)
         if: github.event_name == 'pull_request' && failure()
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -66,7 +63,7 @@ jobs:
 
             📦 **Check the Artifacts tab** above to download and inspect the visual differences.
 
-            ✅ If these changes are expected, run this locally and push:
+            ✅ If these changes are expected, update your local snapshots and push:
             ```bash
             npm run test:visual:update
             git commit -am "✅ Accept visual changes"
