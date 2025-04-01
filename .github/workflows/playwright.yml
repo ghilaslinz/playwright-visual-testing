@@ -46,7 +46,7 @@ jobs:
           name: visual-diffs
           path: test-results/**/*.png
 
-      - name: 💬 Comment on PR with diff info
+      - name: 💬 Comment on PR with visual test status
         if: github.event_name == 'pull_request' && failure()
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -54,13 +54,13 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             🚨 **Visual Regression Test Failed**
-            
-            Some screenshots have changed in this PR.
-            
-            🔍 Please review the visual diffs under the **Artifacts** section of this workflow.
-            
-            ✅ If these changes are intended, you can update the baselines locally:
+
+            🔍 Please review the visual diffs attached to this workflow run under the **Artifacts** section.
+
+            ➕ If these changes are intentional, update the snapshots locally:
             ```bash
             npm run test:visual:update
+            git commit -am "✅ Accept visual changes"
+            git push
             ```
-            💾 Then commit the updated snapshots and push again.
+            📦 [View workflow run and download diffs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
