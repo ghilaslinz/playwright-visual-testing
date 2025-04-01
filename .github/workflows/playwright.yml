@@ -31,7 +31,7 @@ jobs:
           NODE_ENV: development
 
       - name: ⏱ Wait for server to be ready
-        uses: jakejarvis/wait-action@v0.1.1
+        uses: jakejarvis/wait-action@master
         with:
           url: http://localhost:3000
           timeout: 30
@@ -41,7 +41,7 @@ jobs:
 
       - name: 📦 Upload visual diffs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@8e7b8dcfafb5f55adf0f9682d23e037f99e92423
         with:
           name: visual-diffs
           path: test-results/**/*.png
