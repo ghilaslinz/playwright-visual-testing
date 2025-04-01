@@ -22,8 +22,19 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: ⬇️ Install Playwright and its browsers
+      - name: ⬇️ Install Playwright and browsers
         run: npx playwright install --with-deps
+
+      - name: 🚀 Start Next.js server
+        run: npm run dev &
+        env:
+          NODE_ENV: development
+
+      - name: ⏱ Wait for server to be ready
+        uses: jakejarvis/wait-action@v0.1.1
+        with:
+          url: http://localhost:3000
+          timeout: 30
 
       - name: 🧪 Run visual tests
         run: npm run test:visual
