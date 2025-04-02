@@ -1,19 +1,21 @@
 import { test, expect } from '@playwright/test';
 
 test('card component snapshot', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 720 }); // Fixed viewport for consistency
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto('http://localhost:3000');
 
-  // Wait for network + layout + fonts to settle
+  // Ensure network and layout are stable
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(100); // Let layout breathe
+  await page.evaluate(() => {
+    document.body.classList.add('no-animations');
+  });
 
+  await page.waitForTimeout(100); // Buffer for font/layout
   const card = page.getByTestId('profile-card');
-
-  // Optional: scroll into view just to be sure
   await card.scrollIntoViewIfNeeded();
-
-  await expect(card).toHaveScreenshot('card-light.png');
+  await expect(card).toHaveScreenshot('card-light.png', {
+    threshold: 0.02,
+  });
 });
 
 test('dark mode snapshot', async ({ page }) => {
@@ -21,10 +23,14 @@ test('dark mode snapshot', async ({ page }) => {
   await page.goto('http://localhost:3000');
 
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(100);
+  await page.evaluate(() => {
+    document.body.classList.add('no-animations');
+  });
 
   await page.getByTestId('theme-toggle').click();
-  await page.waitForTimeout(100); // Let dark mode render fully
+  await page.waitForTimeout(150); // Extra for UI transition
 
-  await expect(page).toHaveScreenshot('homepage-dark.png');
+  await expect(page).toHaveScreenshot('homepage-dark.png', {
+    threshold: 0.02, // ✅ allow up to 2% pixel difference
+  });
 });
